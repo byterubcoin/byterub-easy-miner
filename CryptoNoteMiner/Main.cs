@@ -44,7 +44,7 @@ namespace CryptoNoteMiner
             _syncContext = SynchronizationContext.Current;
 
             miningBtnStart = buttonStartMining.Text;
-            miningBtnStop = "Stop Mining";
+            miningBtnStop = "Зупинити карбування";
 
             platform64bit = ArchitectureCheck.Is64Bit();
 
@@ -53,23 +53,23 @@ namespace CryptoNoteMiner
             simplewalletPath = AppDomain.CurrentDomain.BaseDirectory + @"binaries\simplewallet\" + platformString + @"\simplewallet.exe";
             cpuminerPath = AppDomain.CurrentDomain.BaseDirectory + @"binaries\cpuminer\" + platformString + @"\minerd.exe";
 
-            walletPath = AppDomain.CurrentDomain.BaseDirectory + @"wallet.address.txt";
+            walletPath = AppDomain.CurrentDomain.BaseDirectory + @"wallet.address";
 
             if (!File.Exists(simplewalletPath))
             {
-                MessageBox.Show("Missing " + simplewalletPath);
+                MessageBox.Show("Бракує " + simplewalletPath);
                 Process.GetCurrentProcess().Kill();
             }
 
             if (!File.Exists(cpuminerPath))
             {
-                MessageBox.Show("Missing " + cpuminerPath);
+                MessageBox.Show("Бракує " + cpuminerPath);
                 Process.GetCurrentProcess().Kill();
             }
 
             if (!File.Exists(walletPath))
             {
-                MessageBox.Show("Generating new wallet with the password: x");
+                MessageBox.Show("Створюється новий гаманець з паролем: x");
                 GenerateWallet();
             }
             else
@@ -141,7 +141,7 @@ namespace CryptoNoteMiner
             process.Exited += (s, e) =>
             {
                 if (!File.Exists(walletPath))
-                    MessageBox.Show("Failed to generate new wallet");
+                    MessageBox.Show("Невдалось створити новий гаманець");
                 else 
                     ReadWalletAddress();
             };
@@ -174,7 +174,7 @@ namespace CryptoNoteMiner
             process.StartInfo = startInfo;
             process.EnableRaisingEvents = true;
             process.Exited += (s, e) => {
-                Log("Miner died");
+                Log("Майнер виключився");
                 minerProcesses.Remove(process);
                 if (minerProcesses.Count == 0)
                 {
@@ -193,7 +193,7 @@ namespace CryptoNoteMiner
             SetParent(process.MainWindowHandle, panel1.Handle);
             MoveWindow(process.MainWindowHandle, 0, 0, panel1.Width, panel1.Height - 20, true);
 
-            Log("Miner started on " + cores + " cores");
+            Log("Майнер запущено на " + cores + " ядрах");
         }
 
 
@@ -241,6 +241,11 @@ namespace CryptoNoteMiner
                 textBoxPoolHost.Enabled = textBoxPoolPort.Enabled = comboBoxCores.Enabled = true;
                 killMiners();
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
 
 
